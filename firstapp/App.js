@@ -10,6 +10,7 @@ import {
   ScrollView
 } from 'react-native'
 import { Button } from 'react-native-elements'
+import ToDo from './ToDo'
 
 const { height, width } = Dimensions.get('window')
 
@@ -33,6 +34,9 @@ export default class App extends React.Component {
             returnKeyType={'done'}
             autoCorrect={false}
           />
+          <ScrollView contentContainerStyle={styles.toDos}>
+            <ToDo />
+          </ScrollView>
         </View>
       </View>
     )
@@ -84,5 +88,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#bbb',
     borderBottomWidth: 1,
     fontSize: 25
+  },
+  toDos: {
+    alignItems: 'center'
   }
 })
