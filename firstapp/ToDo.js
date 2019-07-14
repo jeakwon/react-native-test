@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Icon } from 'react-native-elements'
 import {
   View,
   Text,
@@ -15,18 +16,49 @@ export default class Todo extends Component {
     isCompleted: false
   }
   render () {
-    const { isCompleted } = this.state
+    const { isCompleted, isEditing } = this.state
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._toggleComplete}>
-          <View
+        <View style={styles.column}>
+          <TouchableOpacity onPress={this._toggleComplete}>
+            <View
+              style={[
+                styles.circle,
+                isCompleted ? styles.completedCircle : styles.uncompletedCircle
+              ]}
+            />
+          </TouchableOpacity>
+          <Text
             style={[
-              styles.circle,
-              isCompleted ? styles.completedCircle : styles.uncompletedCircle
+              styles.text,
+              isCompleted ? styles.completedText : styles.uncompletedText
             ]}
-          />
-        </TouchableOpacity>
-        <Text style={styles.text}>Hello I'm a To Do</Text>
+          >
+            Hello I'm a To Do
+          </Text>
+        </View>
+        {isEditing ? (
+          <View style={styles.actions}>
+            <TouchableOpacity>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionText}>V</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.actions}>
+            <TouchableOpacity onPressOut>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionText}>O</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View style={styles.actionContainer}>
+                <Text style={styles.actionText}>X</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     )
   }
@@ -39,13 +71,20 @@ export default class Todo extends Component {
   }
 }
 
+_startEditing = () => {
+  this.setState({
+    isEditing: true
+  })
+}
+
 const styles = StyleSheet.create({
   container: {
     width: width - 50,
     borderBottomColor: '#bbb',
     borderBottomWidth: StyleSheet.hairlineWidth,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   text: {
     fontWeight: '600',
@@ -65,5 +104,25 @@ const styles = StyleSheet.create({
   },
   uncompletedCircle: {
     borderColor: '#F23657'
+  },
+  completedText: {
+    color: '#bbb',
+    textDecorationLine: 'line-through'
+  },
+  uncompletedText: {
+    color: '#F23657'
+  },
+  column: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: width / 2,
+    justifyContent: 'space-between'
+  },
+  actions: {
+    flexDirection: 'row'
+  },
+  actionContainer: {
+    marginVertical: 10,
+    marginHorizontal: 10
   }
 })
